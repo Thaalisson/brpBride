@@ -1,3 +1,5 @@
+const API_KEY = process.env.REACT_APP_LOL_API_KEY;
+
 export const fetchPUUID = async (gameName, tagLine) => {
   try {
     const response = await fetch(`/riot/riot/account/v1/accounts/by-riot-id/${gameName}/${tagLine}?api_key=${API_KEY}`);
