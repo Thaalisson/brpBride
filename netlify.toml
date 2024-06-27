@@ -7,3 +7,9 @@
   to = "/.netlify/functions/riot-proxy/:splat"
   status = 200
   force = true
+
+[[redirects]]
+  from = "/br1/*"
+  to = "/.netlify/functions/riot-proxy/:splat"
+  status = 200
+  force = true
