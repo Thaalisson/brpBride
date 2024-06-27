@@ -32,8 +32,7 @@ const divisionOrder = {
 };
 
 const comparePlayers = (a, b) => {
-  // Check if a or b is 'Snake' or 'RiteZ'
-  const isSnakeOrRiteZ = player => player.account.gameName === 'Snake' || player.account.gameName === 'RiteZ';
+   const isSnakeOrRiteZ = player => player.account.gameName === 'Snake' || player.account.gameName === 'RiteZ';
   
   if (isSnakeOrRiteZ(a) && isSnakeOrRiteZ(b)) {
     return 0; // If both are 'Snake' or 'RiteZ', consider them equal
