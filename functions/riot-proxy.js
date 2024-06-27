@@ -2,7 +2,8 @@ const fetch = require('node-fetch');
 
 exports.handler = async function(event, context) {
   const API_KEY = process.env.REACT_APP_LOL_API_KEY;
-  const riotUrl = `https://americas.api.riotgames.com${event.path.replace('/.netlify/functions/riot-proxy', '')}?api_key=${API_KEY}`;
+  const path = event.path.replace('/.netlify/functions/riot-proxy', '');
+  const riotUrl = `https://americas.api.riotgames.com${path}${path.includes('?') ? '&' : '?'}api_key=${API_KEY}`;
 
   try {
     const response = await fetch(riotUrl, {

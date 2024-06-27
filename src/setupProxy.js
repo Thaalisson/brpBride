@@ -9,6 +9,9 @@ module.exports = function(app) {
       pathRewrite: {
         '^/riot': ''
       },
+      onProxyReq: (proxyReq, req) => {
+        proxyReq.setHeader('X-Riot-Token', process.env.REACT_APP_LOL_API_KEY);
+      }
     })
   );
   app.use(
@@ -19,6 +22,9 @@ module.exports = function(app) {
       pathRewrite: {
         '^/br1': ''
       },
+      onProxyReq: (proxyReq, req) => {
+        proxyReq.setHeader('X-Riot-Token', process.env.REACT_APP_LOL_API_KEY);
+      }
     })
   );
 };
