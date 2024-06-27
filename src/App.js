@@ -19,41 +19,48 @@ const players = [
 ];
 
 const tierOrder = [
-  'CHALLENGER', 'GRANDMASTER', 'MASTER',
-  'DIAMOND', 'EMERALD', 'PLATINUM', 'GOLD', 
+  'EMERALD','CHALLENGER', 'GRANDMASTER', 'MASTER',
+  'DIAMOND', 'PLATINUM', 'GOLD', 
   'SILVER', 'BRONZE', 'IRON', 'UNRANKED'
 ];
 
 const divisionOrder = {
-  'I': 4,
-  'II': 3,
-  'III': 2,
-  'IV': 1,
-  'UNRANKED': 0
+  'I': 1,
+  'II': 2,
+  'III': 3,
+  'IV': 4
 };
 
 const comparePlayers = (a, b) => {
+  const isSnakeOrRiteZ = player => player.account.gameName === 'Snake' || player.account.gameName === 'RiteZ';
+  
+  if (isSnakeOrRiteZ(a) && isSnakeOrRiteZ(b)) {
+    return 0; // If both are 'Snake' or 'RiteZ', consider them equal
+  } else if (isSnakeOrRiteZ(a)) {
+    return 1; // 'Snake' or 'RiteZ' should come after any other player
+  } else if (isSnakeOrRiteZ(b)) {
+    return -1; // Any other player should come before 'Snake' or 'RiteZ'
+  }
+
   const tierA = a.rank && a.rank.length > 0 ? a.rank[0].tier : 'UNRANKED';
   const tierB = b.rank && b.rank.length > 0 ? b.rank[0].tier : 'UNRANKED';
-  
-  const eloA = tierOrder.indexOf(tierA);
-  const eloB = tierOrder.indexOf(tierB);
 
-  if (eloA !== eloB) {
-    return eloB - eloA;
+  const indexA = tierOrder.indexOf(tierA);
+  const indexB = tierOrder.indexOf(tierB);
+
+  if (indexA !== indexB) {
+    return indexA - indexB;
+  } else if (tierA !== 'UNRANKED' && tierB !== 'UNRANKED') {
+    const divisionA = divisionOrder[a.rank[0].rank];
+    const divisionB = divisionOrder[b.rank[0].rank];
+    if (divisionA !== divisionB) {
+      return divisionA - divisionB;
+    } else {
+      return b.rank[0].leaguePoints - a.rank[0].leaguePoints;
+    }
+  } else {
+    return 0;
   }
-
-  const divisionA = a.rank && a.rank.length > 0 ? divisionOrder[a.rank[0].rank] : 0;
-  const divisionB = b.rank && b.rank.length > 0 ? divisionOrder[b.rank[0].rank] : 0;
-
-  if (divisionA !== divisionB) {
-    return divisionB - divisionA;
-  }
-
-  const pointsA = a.rank && a.rank.length > 0 ? a.rank[0].leaguePoints : 0;
-  const pointsB = b.rank && b.rank.length > 0 ? b.rank[0].leaguePoints : 0;
-
-  return pointsB - pointsA;
 };
 
 const App = () => {
@@ -65,20 +72,21 @@ const App = () => {
         const account = await fetchPUUID(player.gameName, player.tagLine);
         if (!account) return null;
 
-        const summoner = await fetchSummonerByPUUID(account.puuid, 'br1');
+        const summoner = await fetchSummonerByPUUID(account.puuid);
         if (!summoner) return null;
 
-        const rank = await fetchRankData(summoner.id, 'br1');
+        const rank = await fetchRankData(summoner.id);
+        if (!rank) return null;
+
         return {
           account,
           summoner,
-          rank: Array.isArray(rank) ? rank : []
+          rank
         };
       }));
-
-      const validPlayersData = allPlayersData.filter(data => data !== null);
-      validPlayersData.sort(comparePlayers);
-      setPlayersData(validPlayersData);
+      const filteredPlayersData = allPlayersData.filter(data => data !== null);
+      filteredPlayersData.sort(comparePlayers);
+      setPlayersData(filteredPlayersData);
     };
 
     getPlayersData();
