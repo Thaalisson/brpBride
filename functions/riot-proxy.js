@@ -5,6 +5,8 @@ exports.handler = async function(event, context) {
   const path = event.path.replace('/.netlify/functions/riot-proxy', '');
   const riotUrl = `https://americas.api.riotgames.com${path}${path.includes('?') ? '&' : '?'}api_key=${API_KEY}`;
 
+  console.log('Requesting URL:', riotUrl);  // Adicionando log para verificar a URL
+
   try {
     const response = await fetch(riotUrl, {
       method: event.httpMethod,
@@ -22,6 +24,7 @@ exports.handler = async function(event, context) {
       body: JSON.stringify(data)
     };
   } catch (error) {
+    console.error('Error fetching data:', error);  // Adicionando log para erros
     return {
       statusCode: 500,
       body: JSON.stringify({ error: 'Failed to fetch data from Riot API' })
