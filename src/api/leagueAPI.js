@@ -8,6 +8,7 @@ export const fetchPUUID = async (gameName, tagLine) => {
     if (!response.ok) {
       throw new Error(`Network response was not ok: ${response.statusText} (status: ${response.status})`);
     }
+    
     const data = await response.json();
     return data;
   } catch (error) {
