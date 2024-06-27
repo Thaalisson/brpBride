@@ -2,14 +2,14 @@ const API_KEY = process.env.REACT_APP_LOL_API_KEY;
 
 export const fetchPUUID = async (gameName, tagLine) => {
   try {
-    const url = `/riot/riot/account/v1/accounts/by-riot-id/${gameName}/${tagLine}?api_key=${API_KEY}`;
+    const url = `/riot/account/v1/accounts/by-riot-id/${encodeURIComponent(gameName)}/${encodeURIComponent(tagLine)}`;
     console.log('Fetching PUUID from URL:', url);
     const response = await fetch(url);
     if (!response.ok) {
       throw new Error(`Network response was not ok: ${response.statusText} (status: ${response.status})`);
     }
-    
     const data = await response.json();
+    console.log('Data:', data);
     return data;
   } catch (error) {
     console.error('Error fetching PUUID:', error.message);

@@ -1,0 +1,9 @@
+[build]
+  publish = "build"
+  functions = "functions"
+
+[[redirects]]
+  from = "/riot/*"
+  to = "/.netlify/functions/riot-proxy/:splat"
+  status = 200
+  force = true
