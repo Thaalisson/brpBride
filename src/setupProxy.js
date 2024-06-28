@@ -11,10 +11,6 @@ module.exports = function(app) {
       },
       onProxyReq: (proxyReq, req) => {
         proxyReq.setHeader('X-Riot-Token', process.env.REACT_APP_LOL_API_KEY);
-        console.log('Proxying request aee to:', `https://americas.api.riotgames.com${req.url}`);  // Adicionando log para verificar a URL
-      },
-      onError: (err, req, res) => {
-        console.error('Proxy error:', err);  // Adicionando log para erros
       }
     })
   );
@@ -28,10 +24,6 @@ module.exports = function(app) {
       },
       onProxyReq: (proxyReq, req) => {
         proxyReq.setHeader('X-Riot-Token', process.env.REACT_APP_LOL_API_KEY);
-        console.log('Proxying request to:', `https://br1.api.riotgames.com${req.url}`);  // Adicionando log para verificar a URL
-      },
-      onError: (err, req, res) => {
-        console.error('Proxy error:', err);  // Adicionando log para erros
       }
     })
   );
