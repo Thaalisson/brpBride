@@ -1,5 +1,3 @@
-// src/components/RankCard.js
-
 import React, { useState } from 'react';
 import ironImage from '../assets/images/Emblem_Iron.png';
 import bronzeImage from '../assets/images/Emblem_Bronze.png';
@@ -11,7 +9,7 @@ import diamondImage from '../assets/images/Emblem_Diamond.png';
 import masterImage from '../assets/images/Emblem_Master.png';
 import grandmasterImage from '../assets/images/Emblem_Grandmaster.png';
 import challengerImage from '../assets/images/Emblem_Challenger.png';
-import trollImage from '../assets/images/Troll.png'; // Imagem do TROLL 1
+import trollImage from '../assets/images/Troll.png';
 
 const tierImages = {
   IRON: ironImage,
