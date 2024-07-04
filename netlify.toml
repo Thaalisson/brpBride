@@ -1,8 +1,12 @@
 [build]
   functions = "functions"
-  publish = "build"
 
 [[redirects]]
-  from = "/api/*"
-  to = "/.netlify/functions/:splat"
+  from = "/riot/*"
+  to = "/.netlify/functions/riot/:splat"
+  status = 200
+
+[[redirects]]
+  from = "/br1/*"
+  to = "/.netlify/functions/br1/:splat"
   status = 200
