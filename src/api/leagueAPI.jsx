@@ -2,7 +2,7 @@ const API_BASE_URL = '/.netlify/functions';
 
 export const fetchPUUID = async (gameName, tagLine) => {
   try {
-    const url = `${API_BASE_URL}/riot/account/v1/accounts/by-riot-id/${encodeURIComponent(gameName)}/${encodeURIComponent(tagLine)}`;
+    const url = `${API_BASE_URL}/riot/riot/account/v1/accounts/by-riot-id/${encodeURIComponent(gameName)}/${encodeURIComponent(tagLine)}`;
     console.log('Fetching PUUID from URL:', url);
     const response = await fetch(url);
     if (!response.ok) {
