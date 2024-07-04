@@ -1,4 +1,5 @@
 const express = require('express');
+const serverless = require('serverless-http');
 const cors = require('cors');
 
 const app = express();
@@ -32,6 +33,4 @@ app.get('/br1/*', async (req, res) => {
   }
 });
 
-app.listen(4000, function () {
-  console.log("Server started on port 4000");
-});
+module.exports.handler = serverless(app);
