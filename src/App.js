@@ -4,7 +4,6 @@ import React, { useState, useEffect } from 'react';
 import Header from './components/Header';
 import RankCard from './components/RankCard';
 import { fetchPUUID, fetchSummonerByPUUID, fetchRankData } from './api/leagueAPI';
-import ApiTest from './components/ApiTest';
 import './styles/App.css';
 
 const players = [
