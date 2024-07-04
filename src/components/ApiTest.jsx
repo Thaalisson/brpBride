@@ -1,11 +1,10 @@
 import React, { useEffect } from 'react';
-const API_KEY = process.env.REACT_APP_LOL_API_KEY;
 
 const ApiTest = () => {
   useEffect(() => {
     const testAPI = async () => {
       try {
-        const response = await fetch(`/riot/riot/account/v1/accounts/by-riot-id/BRP%20FATE/BR1?api_key=${API_KEY}`);
+        const response = await fetch('riot/riot/riot/account/v1/accounts/by-riot-id/brp%20fate/BR1');
         if (!response.ok) {
           throw new Error(`Network response was not ok: ${response.statusText} (status: ${response.status})`);
         }

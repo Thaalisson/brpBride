@@ -1,6 +1,6 @@
 export const fetchPUUID = async (gameName, tagLine) => {
   try {
-    const url = `/riot/account/v1/accounts/by-riot-id/${encodeURIComponent(gameName)}/${encodeURIComponent(tagLine)}`;
+    const url = `riot/riot/riot/account/v1/accounts/by-riot-id/${encodeURIComponent(gameName)}/${encodeURIComponent(tagLine)}`;
     console.log('Fetching PUUID from URL:', url);
     const response = await fetch(url);
     if (!response.ok) {
@@ -17,7 +17,7 @@ export const fetchPUUID = async (gameName, tagLine) => {
 
 export const fetchSummonerByPUUID = async (puuid) => {
   try {
-    const url = `/br1/lol/summoner/v4/summoners/by-puuid/${encodeURIComponent(puuid)}`;
+    const url = `/br1/br1/br1/lol/summoner/v4/summoners/by-puuid/${encodeURIComponent(puuid)}`;
     console.log('Fetching Summoner by PUUID from URL:', url);
     const response = await fetch(url);
     if (!response.ok) {
