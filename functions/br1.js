@@ -4,7 +4,7 @@ exports.handler = async function(event, context) {
   
     console.log('Request received:', event.path);
     const API_KEY = process.env.RIOT_API_KEY; // Defina a chave API no arquivo .env
-    const apiUrl = `https://br1.api.riotgames.com${event.path.replace('/.netlify/functions/br1', '')}?api_key=${API_KEY}`;
+    const apiUrl = `https://br1.api.riotgames.com${event.path.replace('/.netlify/functions/br1/br1', '')}?api_key=${API_KEY}`;
     console.log('Fetching from:', apiUrl);
   
     try {
