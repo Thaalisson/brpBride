@@ -20,8 +20,8 @@ const players = [
 ];
 
 const tierOrder = [
-  'EMERALD','CHALLENGER', 'GRANDMASTER', 'MASTER',
-  'DIAMOND', 'PLATINUM', 'GOLD', 
+  'CHALLENGER', 'GRANDMASTER', 'MASTER',
+  'DIAMOND', 'EMERALD','PLATINUM', 'GOLD', 
   'SILVER', 'BRONZE', 'IRON', 'UNRANKED'
 ];
 
@@ -33,7 +33,7 @@ const divisionOrder = {
 };
 
 const comparePlayers = (a, b) => {
-  const isSnakeOrRiteZ = player => player.account.gameName === 'Snake' || player.account.gameName === 'RiteZ';
+  const isSnakeOrRiteZ = player => player.account.gameName === 'RiteZ';
   
   if (isSnakeOrRiteZ(a) && isSnakeOrRiteZ(b)) {
     return 0; // If both are 'Snake' or 'RiteZ', consider them equal
@@ -96,7 +96,7 @@ const App = () => {
   return (
     <div className="App">
       <Header />
-      <ApiTest />
+    
       <div className="players-container">
         {playersData.map((playerData, index) => (
           <RankCard 

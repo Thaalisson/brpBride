@@ -4,7 +4,7 @@ const cors = require('cors');
 const app = express();
 app.use(cors());
 
-const API_KEY = 'RGAPI-721d309c-5851-44c1-af4c-ca58a0c58664';  // Use a sua API_KEY aqui
+const API_KEY = REACT_APP_LOL_API_KEY;  // Use a sua API_KEY aqui
 
 app.get('/riot/*', async (req, res) => {
   try {
