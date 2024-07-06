@@ -1,9 +1,7 @@
 // src/App.js
-
 import React, { useState, useEffect } from 'react';
 import Header from './components/Header';
 import RankCard from './components/RankCard';
-import SummonerProfile from './components/SummonerProfile';
 import { fetchPUUID, fetchSummonerByPUUID, fetchRankData } from './api/leagueAPI';
 import './styles/App.css';
 
@@ -96,8 +94,17 @@ const App = () => {
   return (
     <div className="App">
       <Header />
-     <SummonerProfile/>
-     
+    
+      <div className="players-container">
+        {playersData.map((playerData, index) => (
+          <RankCard 
+            key={index}
+            summonerData={playerData.summoner} 
+            rankData={playerData.rank} 
+            accountData={playerData.account} 
+          />
+        ))}
+      </div>
     </div>
   );
 };
