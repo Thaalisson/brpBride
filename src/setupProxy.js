@@ -7,7 +7,7 @@ module.exports = function(app) {
       target: 'http://localhost:4000',
       changeOrigin: true,
       pathRewrite: {
-        '^/riot': '/riot'
+        '^/riot': ''  // Remove '/riot' do início do caminho
       }
     })
   );
@@ -17,7 +17,7 @@ module.exports = function(app) {
       target: 'http://localhost:4000',
       changeOrigin: true,
       pathRewrite: {
-        '^/br1': '/br1'
+        '^/br1': ''  // Remove '/br1' do início do caminho
       }
     })
   );
