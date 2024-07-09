@@ -100,9 +100,7 @@ const App = () => {
         const rankData = await fetchRankData(summoner.id);
         if (!rankData) return null;
 
-
         const rank = rankData.find(r => r.queueType === 'RANKED_SOLO_5x5') || rankData[0];
-       debugger;
         return {
           ...player,
           account,
@@ -128,6 +126,7 @@ const App = () => {
             summonerData={playerData.summoner} 
             rankData={playerData.rank} 
             accountData={playerData.account} 
+            isFirst={index === 0} // Passa a prop isFirst para o RankCard
           />
         ))}
       </div>
