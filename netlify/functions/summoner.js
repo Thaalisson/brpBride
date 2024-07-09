@@ -1,5 +1,6 @@
 const dotenv = require('dotenv');
 const path = require('path');
+const fetch = require('node-fetch');
 
 // Carregar variáveis de ambiente do .env na raiz do projeto
 dotenv.config({ path: path.resolve(__dirname, '../../.env') });
@@ -7,8 +8,6 @@ dotenv.config({ path: path.resolve(__dirname, '../../.env') });
 const API_KEY = process.env.API_KEY;
 
 async function fetchWithRetry(url, retries = 3, backoff = 3000) {
-  const fetch = (await import('node-fetch')).default;
-  
   for (let i = 0; i < retries; i++) {
     const response = await fetch(url);
     if (response.ok) {
@@ -18,6 +17,8 @@ async function fetchWithRetry(url, retries = 3, backoff = 3000) {
       console.log(`Rate limit exceeded. Retrying in ${backoff}ms...`);
       await new Promise(resolve => setTimeout(resolve, backoff));
       backoff *= 2; // Exponential backoff
+    } else if (response.status === 403) {
+      throw new Error(`Forbidden: ${response.statusText}`);
     } else {
       throw new Error(`Error fetching data from Riot API: ${response.statusText}`);
     }
