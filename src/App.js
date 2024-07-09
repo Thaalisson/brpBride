@@ -1,5 +1,3 @@
-// src/App.js
-
 import React, { useState, useEffect } from 'react';
 import Header from './components/Header';
 import RankCard from './components/RankCard';
@@ -53,9 +51,9 @@ const comparePlayers = (a, b) => {
   const tierA = a.rank && a.rank.length > 0 ? a.rank[0].tier : 'UNRANKED';
   const tierB = b.rank && b.rank.length > 0 ? b.rank[0].tier : 'UNRANKED';
   const rankA = a.rank && a.rank.length > 0 ? a.rank[0].rank : 'IV';
-  const rankB = b.rank && b.rank.length > 0 ? b.rank[0].rank : 'IV';
+  const rankB = b.rank && b.rank.length > 0 ? a.rank[0].rank : 'IV';
   const pointsA = a.rank && a.rank.length > 0 ? a.rank[0].leaguePoints : 0;
-  const pointsB = b.rank && b.rank.length > 0 ? b.rank[0].leaguePoints : 0;
+  const pointsB = a.rank && a.rank.length > 0 ? a.rank[0].leaguePoints : 0;
 
   console.log(`Comparing ${a.account.gameName} (${tierA} ${rankA}, LP: ${pointsA}) with ${b.account.gameName} (${tierB} ${rankB}, LP: ${pointsB})`);
 
@@ -98,7 +96,11 @@ const App = () => {
         if (!summoner) return null;
 
         const rankData = await fetchRankData(summoner.id);
-        if (!rankData) return null;
+        console.log('Rank data:', rankData);
+        if (!Array.isArray(rankData)) {
+          console.error('rankData is not an array:', rankData);
+          return null;
+        }
 
         const rank = rankData.find(r => r.queueType === 'RANKED_SOLO_5x5') || rankData[0];
         return {
