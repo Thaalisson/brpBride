@@ -15,11 +15,7 @@ app.use(cors({ origin: '*' }));
 app.get('/account/v1/accounts/by-riot-id/*', async (req, res) => {
   try {
     const fetch = (await import('node-fetch')).default;
-<<<<<<< HEAD
     const apiUrl = `https://americas.api.riotgames.com/riot${req.path}?api_key=${API_KEY}`;
-=======
-    const apiUrl = `https://americas.api.riotgames.com/lol${req.path}?api_key=${API_KEY}`;
->>>>>>> 2ade977f33d5f7ecae9133ad0a29d5ac0f435bdd
     console.log('Fetching from:', apiUrl);
     const response = await fetch(apiUrl);
     res.json(await response.json());
@@ -32,11 +28,7 @@ app.get('/account/v1/accounts/by-riot-id/*', async (req, res) => {
 app.get('/lol/summoner/v4/summoners/by-puuid/*', async (req, res) => {
   try {
     const fetch = (await import('node-fetch')).default;
-<<<<<<< HEAD
     const apiUrl = `https://br1.api.riotgames.com${req.path}?api_key=${API_KEY}`;
-=======
-    const apiUrl = `https://br1.api.riotgames.com/lol${req.path}?api_key=${API_KEY}`;
->>>>>>> 2ade977f33d5f7ecae9133ad0a29d5ac0f435bdd
     console.log('Fetching from:', apiUrl);
     const response = await fetch(apiUrl);
     res.json(await response.json());
@@ -49,11 +41,7 @@ app.get('/lol/summoner/v4/summoners/by-puuid/*', async (req, res) => {
 app.get('/lol/league/v4/entries/by-summoner/*', async (req, res) => {
   try {
     const fetch = (await import('node-fetch')).default;
-<<<<<<< HEAD
     const apiUrl = `https://br1.api.riotgames.com${req.path}?api_key=${API_KEY}`;
-=======
-    const apiUrl = `https://br1.api.riotgames.com/lol${req.path}?api_key=${API_KEY}`;
->>>>>>> 2ade977f33d5f7ecae9133ad0a29d5ac0f435bdd
     console.log('Fetching from:', apiUrl);
     const response = await fetch(apiUrl);
     res.json(await response.json());
