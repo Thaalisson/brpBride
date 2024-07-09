@@ -1,4 +1,4 @@
-const API_BASE_URL = process.env.REACT_APP_API_BASE_URL || 'http://localhost:8888/.netlify/functions';
+const API_BASE_URL = process.env.REACT_APP_API_BASE_URL || 'https://brprank.netlify.app/.netlify/functions';
 
 export const fetchPUUID = async (gameName, tagLine) => {
   try {
