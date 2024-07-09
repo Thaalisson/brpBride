@@ -1,7 +1,7 @@
 /* src/styles/App.css */
 
 body {
-  background-color: #000000; /* Azul escuro */
+  background-color: #000000;
   color: #ffffff;
   font-family: Arial, sans-serif;
   margin: 0;
@@ -29,16 +29,17 @@ header {
   border-radius: 8px;
   padding: 20px;
   margin: 10px;
-  width: 800px; /* Largura aumentada */
+  width: 90%; /* Ajuste para largura responsiva */
+  max-width: 800px; /* Largura máxima */
   display: flex;
-  flex-direction: row; /* Alinhar conteúdo em linha */
+  flex-direction: row;
   align-items: center;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
 }
 
 .rank-card img {
-  width: 100px; /* Tamanho da imagem */
-  margin: 0 20px; /* Espaçamento lateral */
+  width: 100px; /* Tamanho da imagem ajustado */
+  margin: 0 20px; /* Espaçamento lateral ajustado */
 }
 
 .rank-info {
@@ -73,4 +74,27 @@ h2 {
 
 p {
   margin: 5px 0;
+}
+
+@media (max-width: 600px) {
+  .rank-card {
+    flex-direction: column;
+    align-items: center; /* Alinha os itens ao centro */
+    width: 90%;
+    text-align: center;
+  }
+
+  .rank-card img {
+    width: 80px; /* Tamanho da imagem ajustado para mobile */
+    margin: 10px 0; /* Espaçamento lateral ajustado para mobile */
+  }
+
+  .rank-info, .rank-stats {
+    width: 100%;
+    text-align: center; /* Centraliza o texto */
+  }
+
+  .rank-stats {
+    margin-top: 10px;
+  }
 }
