@@ -28,7 +28,7 @@ const tierImages = {
 const RankCard = ({ summonerData, rankData, accountData }) => {
   const [showTrollImage, setShowTrollImage] = useState(false);
 
-  const soloRank = rankData.find(entry => entry.queueType === "RANKED_SOLO_5x5") || { tier: 'UNRANKED', rank: '', leaguePoints: 0, wins: 0, losses: 0 };
+  const soloRank = rankData.find(entry => entry.queueType === "RANKED_SOLO_5x5") || { tier: '', rank: '', leaguePoints: 0, wins: 0, losses: 0 };
 
   const handleCardClick = () => {
     setShowTrollImage(!showTrollImage);
@@ -57,3 +57,4 @@ const RankCard = ({ summonerData, rankData, accountData }) => {
 };
 
 export default RankCard;
+

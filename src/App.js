@@ -6,9 +6,76 @@ import RankCard from './components/RankCard';
 import { fetchPUUID, fetchSummonerByPUUID, fetchRankData } from './api/leagueAPI';
 import './styles/App.css';
 
+// Funções de comparação
+const elo = (elo) => {
+  switch (elo) {
+    case 'IRON':
+      return 0;
+    case 'BRONZE':
+      return 1;
+    case 'SILVER':
+      return 2;
+    case 'GOLD':
+      return 3;
+    case 'PLATINUM':
+      return 4;
+    case 'EMERALD':
+      return 5;
+    case 'DIAMOND':
+      return 6;
+    case 'MASTER':
+      return 7;
+    case 'GRANDMASTER':
+      return 8;
+    case 'CHALLENGER':
+      return 9;
+    default:
+      return -1; // Caso para valores inesperados
+  }
+};
+
+const tier = (tier) => {
+  switch (tier) {
+    case 'I':
+      return 4;
+    case 'II':
+      return 3;
+    case 'III':
+      return 2;
+    case 'IV':
+      return 1;
+    default:
+      return -1; // Caso para valores inesperados
+  }
+};
+
+const comparePlayers = (a, b) => {
+  const tierA = a.rank && a.rank.length > 0 ? a.rank[0].tier : 'UNRANKED';
+  const tierB = b.rank && b.rank.length > 0 ? b.rank[0].tier : 'UNRANKED';
+  const rankA = a.rank && a.rank.length > 0 ? a.rank[0].rank : 'IV';
+  const rankB = b.rank && b.rank.length > 0 ? b.rank[0].rank : 'IV';
+  const pointsA = a.rank && a.rank.length > 0 ? a.rank[0].leaguePoints : 0;
+  const pointsB = b.rank && b.rank.length > 0 ? b.rank[0].leaguePoints : 0;
+
+  console.log(`Comparing ${a.account.gameName} (${tierA} ${rankA}, LP: ${pointsA}) with ${b.account.gameName} (${tierB} ${rankB}, LP: ${pointsB})`);
+
+  if (elo(tierA) !== elo(tierB)) {
+    console.log(`Different tiers: ${tierA} vs ${tierB}, result: ${elo(tierB) - elo(tierA)}`);
+    return elo(tierB) - elo(tierA);
+  } else if (tier(rankA) !== tier(rankB)) {
+    console.log(`Same tier but different divisions: ${rankA} vs ${rankB}, result: ${tier(rankB) - tier(rankA)}`);
+    return tier(rankB) - tier(rankA);
+  } else {
+    console.log(`Same tier and division, comparing league points: ${pointsA} vs ${pointsB}, result: ${pointsB - pointsA}`);
+    return pointsB - pointsA;
+  }
+};
+
+// Lista de jogadores
 const players = [
   { gameName: 'BRP FATE', tagLine: 'BR1' },
   { gameName: 'BRP VITOR', tagLine: 'BR1' },
+  { gameName: 'ColdFear', tagLine: 'xqdl' },
   { gameName: 'BRP BRENIN', tagLine: 'BR1' },
   { gameName: 'BRP DINHO', tagLine: 'BR1' },
   { gameName: 'BLACKZInn', tagLine: '997' },
@@ -17,51 +84,6 @@ const players = [
   { gameName: 'Stalo', tagLine: 'STALO' },
   { gameName: 'BRP Oghati', tagLine: 'BR1' }
 ];
-
-const tierOrder = [
-  'CHALLENGER', 'GRANDMASTER', 'MASTER',
-  'DIAMOND', 'EMERALD','PLATINUM', 'GOLD', 
-  'SILVER', 'BRONZE', 'IRON', 'UNRANKED'
-];
-
-const divisionOrder = {
-  'I': 1,
-  'II': 2,
-  'III': 3,
-  'IV': 4
-};
-
-const comparePlayers = (a, b) => {
-  const isSnakeOrRiteZ = player => player.account.gameName === 'RiteZ';
-  
-  if (isSnakeOrRiteZ(a) && isSnakeOrRiteZ(b)) {
-    return 0; // If both are 'Snake' or 'RiteZ', consider them equal
-  } else if (isSnakeOrRiteZ(a)) {
-    return 1; // 'Snake' or 'RiteZ' should come after any other player
-  } else if (isSnakeOrRiteZ(b)) {
-    return -1; // Any other player should come before 'Snake' or 'RiteZ'
-  }
-
-  const tierA = a.rank && a.rank.length > 0 ? a.rank[0].tier : 'UNRANKED';
-  const tierB = b.rank && b.rank.length > 0 ? b.rank[0].tier : 'UNRANKED';
-
-  const indexA = tierOrder.indexOf(tierA);
-  const indexB = tierOrder.indexOf(tierB);
-
-  if (indexA !== indexB) {
-    return indexA - indexB;
-  } else if (tierA !== 'UNRANKED' && tierB !== 'UNRANKED') {
-    const divisionA = divisionOrder[a.rank[0].rank];
-    const divisionB = divisionOrder[b.rank[0].rank];
-    if (divisionA !== divisionB) {
-      return divisionA - divisionB;
-    } else {
-      return b.rank[0].leaguePoints - a.rank[0].leaguePoints;
-    }
-  } else {
-    return 0;
-  }
-};
 
 const App = () => {
   const [playersData, setPlayersData] = useState([]);
@@ -75,18 +97,22 @@ const App = () => {
         const summoner = await fetchSummonerByPUUID(account.puuid);
         if (!summoner) return null;
 
-        const rank = await fetchRankData(summoner.id);
-        if (!rank) return null;
+        const rankData = await fetchRankData(summoner.id);
+        if (!rankData) return null;
 
+
+        const rank = rankData.find(r => r.queueType === 'RANKED_SOLO_5x5') || rankData[0];
+       debugger;
         return {
+          ...player,
           account,
           summoner,
-          rank
+          rank: [rank]
         };
       }));
       const filteredPlayersData = allPlayersData.filter(data => data !== null);
-      filteredPlayersData.sort(comparePlayers);
-      setPlayersData(filteredPlayersData);
+      const sortedPlayersData = filteredPlayersData.sort(comparePlayers);
+      setPlayersData(sortedPlayersData);
     };
 
     getPlayersData();
@@ -95,7 +121,6 @@ const App = () => {
   return (
     <div className="App">
       <Header />
-    
       <div className="players-container">
         {playersData.map((playerData, index) => (
           <RankCard 

@@ -1,15 +1,13 @@
 [build]
-  command = "npm run build"
-  publish = "build"
+  functions = "netlify/functions"
+  publish = "public"
 
 [[redirects]]
   from = "/riot/*"
-  to = "/.netlify/functions/server"
+  to = "/.netlify/functions/riot/:splat"
   status = 200
-  force = true
 
 [[redirects]]
   from = "/br1/*"
-  to = "/.netlify/functions/server"
+  to = "/.netlify/functions/summoner/:splat"
   status = 200
-  force = true
