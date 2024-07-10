@@ -1,12 +1,10 @@
-/* src/components/RankCard.css */
-
 .rank-card {
   background-color: #1A1A1E;
   border-radius: 8px;
   padding: 20px;
-  margin: 10px;
-  width: 150%;
-  max-width: 800px;
+  margin: 10px auto; /* Centraliza o card horizontalmente */
+  width: 90%; /* Ajuste para largura responsiva */
+  max-width: 800px; /* Largura máxima */
   display: flex;
   flex-direction: row;
   align-items: center;

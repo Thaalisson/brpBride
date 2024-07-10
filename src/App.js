@@ -5,6 +5,7 @@ import Header from './components/Header';
 import RankCard from './components/RankCard';
 import { fetchPUUID, fetchSummonerByPUUID, fetchRankData } from './api/leagueAPI';
 import './styles/App.css';
+import Footer from './components/Footer';
 
 const elo = (elo) => {
   switch (elo) {
@@ -122,6 +123,7 @@ const App = () => {
           />
         ))}
       </div>
+      <Footer/>
     </div>
   );
 };

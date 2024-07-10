@@ -46,7 +46,7 @@ const RankCard = ({ summonerData, rankData, accountData, isFirst }) => {
         <p>Rank: {soloRank.tier} {soloRank.rank}</p>
       </div>
       <div className="rank-stats">
-        <p>LP: {soloRank.leaguePoints}</p>
+        <p>PDL: {soloRank.leaguePoints}</p>
         <p>Wins: {soloRank.wins}</p>
         <p>Losses: {soloRank.losses}</p>
       </div>
