@@ -12,7 +12,7 @@ import masterImage from '../assets/images/Emblem_Master.png';
 import grandmasterImage from '../assets/images/Emblem_Grandmaster.png';
 import challengerImage from '../assets/images/Emblem_Challenger.png';
 import trollImage from '../assets/images/Troll.png';
-import firstPlayerImage from '../assets/images/Ashe_0.jpg';
+import '../styles/RankCard.css';
 
 const tierImages = {
   IRON: ironImage,
@@ -38,10 +38,7 @@ const RankCard = ({ summonerData, rankData, accountData, isFirst }) => {
   };
 
   return (
-    <div className="rank-card" onClick={handleCardClick}>
-      {isFirst && (
-        <img src={firstPlayerImage} alt="First Player" className="first-player-image" />
-      )}
+    <div className={`rank-card ${isFirst ? 'first' : ''}`} onClick={handleCardClick}>
       <img src={tierImages[soloRank.tier] || tierImages['IRON']} alt={`${soloRank.tier} Emblem`} />
       <div className="rank-info">
         <h2>{accountData.gameName}#{accountData.tagLine}</h2>

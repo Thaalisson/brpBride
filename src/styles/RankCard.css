@@ -1,0 +1,72 @@
+/* src/components/RankCard.css */
+
+.rank-card {
+  background-color: #1A1A1E;
+  border-radius: 8px;
+  padding: 20px;
+  margin: 10px;
+  width: 150%;
+  max-width: 800px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+  cursor: pointer;
+}
+
+.rank-card.first {
+  border: 2px solid #FFD700; /* Borda amarela para o primeiro jogador */
+}
+
+.rank-card img {
+  width: 100px;
+  margin: 0 20px;
+}
+
+.rank-info {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  text-align: left;
+  width: 50%;
+}
+
+.rank-stats {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  text-align: right;
+  width: 30%;
+  background-color: #1A1A1E;
+  padding: 10px;
+  border-radius: 8px;
+  color: #ffffff;
+}
+
+.first-player-highlight {
+  text-align: center;
+  width: 100%;
+}
+
+@media (max-width: 600px) {
+  .rank-card {
+    flex-direction: column;
+    align-items: center;
+    width: 90%;
+    text-align: center;
+  }
+
+  .rank-card img {
+    width: 80px;
+    margin: 10px 0;
+  }
+
+  .rank-info, .rank-stats {
+    width: 100%;
+    text-align: center;
+  }
+
+  .rank-stats {
+    margin-top: 10px;
+  }
+}
