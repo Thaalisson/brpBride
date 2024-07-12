@@ -1,5 +1,3 @@
-// src/components/RankCard.js
-
 import React, { useState } from 'react';
 import ironImage from '../assets/images/Emblem_Iron.png';
 import bronzeImage from '../assets/images/Emblem_Bronze.png';
@@ -28,7 +26,7 @@ const tierImages = {
   UNRANKED: bronzeImage
 };
 
-const RankCard = ({ summonerData, rankData, accountData, isFirst,translations  }) => {
+const RankCard = ({ summonerData, rankData, accountData, isFirst, translations }) => {
   const [showTrollImage, setShowTrollImage] = useState(false);
 
   const soloRank = rankData.find(entry => entry.queueType === "RANKED_SOLO_5x5") || { tier: '', rank: '', leaguePoints: 0, wins: 0, losses: 0 };
@@ -37,13 +35,40 @@ const RankCard = ({ summonerData, rankData, accountData, isFirst,translations  }
     setShowTrollImage(!showTrollImage);
   };
 
+  const tierTranslation = (tier) => {
+    switch (tier) {
+      case 'IRON':
+        return translations.iron;
+      case 'BRONZE':
+        return translations.bronze;
+      case 'SILVER':
+        return translations.silver;
+      case 'GOLD':
+        return translations.gold;
+      case 'PLATINUM':
+        return translations.platinum;
+      case 'EMERALD':
+        return translations.emerald;
+      case 'DIAMOND':
+        return translations.diamond;
+      case 'MASTER':
+        return translations.master;
+      case 'GRANDMASTER':
+        return translations.grandmaster;
+      case 'CHALLENGER':
+        return translations.challenger;
+      default:
+        return tier;
+    }
+  };
+
   return (
     <div className={`rank-card ${isFirst ? 'first' : ''}`} onClick={handleCardClick}>
       <img src={tierImages[soloRank.tier] || tierImages['IRON']} alt={`${soloRank.tier} Emblem`} />
       <div className="rank-info">
         <h2>{accountData.gameName}#{accountData.tagLine}</h2>
         <p>{translations.level}: {summonerData.summonerLevel}</p>
-        <p>{translations.rank}: {soloRank.tier} {soloRank.rank}</p>
+        <p>{translations.rank}: {tierTranslation(soloRank.tier)} {soloRank.rank}</p>
       </div>
       <div className="rank-stats">
         <p>{translations.lp}: {soloRank.leaguePoints}</p>

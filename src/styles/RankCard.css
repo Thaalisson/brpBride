@@ -68,3 +68,21 @@
     margin-top: 10px;
   }
 }
+
+.language-button {
+  background-color: rgba(255, 255, 255, 0.7); /* Fundo branco com 70% de opacidade */
+  color: #333; /* Cor do texto */
+  border: 1px solid #ccc; /* Borda cinza clara */
+  border-radius: 5px; /* Bordas arredondadas */
+  padding: 10px 20px; /* Espaçamento interno */
+  margin: 20px auto; /* Centraliza o botão horizontalmente */
+  display: block; /* Faz o botão ocupar toda a linha disponível */
+  cursor: pointer;
+  font-size: 16px; /* Tamanho da fonte */
+  transition: background-color 0.3s, color 0.3s; /* Transição suave para mudanças de cor */
+}
+
+.language-button:hover {
+  background-color: rgba(255, 255, 255, 0.9); /* Fundo branco com 90% de opacidade no hover */
+  color: #000; /* Cor do texto no hover */
+}

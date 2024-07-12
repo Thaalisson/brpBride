@@ -69,7 +69,6 @@ const comparePlayers = (a, b) => {
 
 const players = [
   { gameName: 'BRP VITOR', tagLine: 'BR1' },
-  { gameName: 'BRP FATE', tagLine: 'BR1' },
   { gameName: 'Archmedes', tagLine: 'BR1' },
   { gameName: 'BRP BRENIN', tagLine: 'BR1' },
   { gameName: 'BRP DINHO', tagLine: 'BR1' },
@@ -120,9 +119,9 @@ const App = () => {
   return (
     <div className="App">
       <Header />
-      <button onClick={toggleLanguage}>
-        {language === 'en' ? 'Português' : 'English'}
-      </button>
+      <button className="language-button" onClick={toggleLanguage}>
+  {language === 'en' ? 'Português' : 'English'}
+</button>
       <div className="players-container">
         {playersData.map((playerData, index) => (
           <RankCard 
