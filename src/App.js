@@ -69,6 +69,8 @@ const comparePlayers = (a, b) => {
 
 const players = [
   { gameName: 'BRP VITOR', tagLine: 'BR1' },
+  { gameName: 'BRP FATE', tagLine: 'BR1' },
+  { gameName: 'Archmedes', tagLine: 'BR1' },
   { gameName: 'BRP BRENIN', tagLine: 'BR1' },
   { gameName: 'BRP DINHO', tagLine: 'BR1' },
   { gameName: 'BLACKZInn', tagLine: '997' },
