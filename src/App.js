@@ -1,12 +1,13 @@
-// src/App.js
-
 import React, { useState, useEffect } from 'react';
 import Header from './components/Header';
 import RankCard from './components/RankCard';
 import { fetchPUUID, fetchSummonerByPUUID, fetchRankData } from './api/leagueAPI';
+import en from './i18n/en';
+import pt from './i18n/pt';
 import './styles/App.css';
 import Footer from './components/Footer';
 
+// Funções de comparação
 const elo = (elo) => {
   switch (elo) {
     case 'IRON':
@@ -67,7 +68,6 @@ const comparePlayers = (a, b) => {
 };
 
 const players = [
-  { gameName: 'BRP FATE', tagLine: 'BR1' },
   { gameName: 'BRP VITOR', tagLine: 'BR1' },
   { gameName: 'BRP BRENIN', tagLine: 'BR1' },
   { gameName: 'BRP DINHO', tagLine: 'BR1' },
@@ -80,6 +80,8 @@ const players = [
 
 const App = () => {
   const [playersData, setPlayersData] = useState([]);
+  const [language, setLanguage] = useState('en');
+  const translations = language === 'en' ? en : pt;
 
   useEffect(() => {
     const getPlayersData = async () => {
@@ -109,9 +111,16 @@ const App = () => {
     getPlayersData();
   }, []);
 
+  const toggleLanguage = () => {
+    setLanguage((prevLanguage) => (prevLanguage === 'en' ? 'pt' : 'en'));
+  };
+
   return (
     <div className="App">
       <Header />
+      <button onClick={toggleLanguage}>
+        {language === 'en' ? 'Português' : 'English'}
+      </button>
       <div className="players-container">
         {playersData.map((playerData, index) => (
           <RankCard 
@@ -119,7 +128,8 @@ const App = () => {
             summonerData={playerData.summoner} 
             rankData={playerData.rank} 
             accountData={playerData.account} 
-            isFirst={index === 0} // Passa a prop isFirst para o RankCard
+            isFirst={index === 0} 
+            translations={translations}
           />
         ))}
       </div>

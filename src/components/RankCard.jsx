@@ -28,7 +28,7 @@ const tierImages = {
   UNRANKED: bronzeImage
 };
 
-const RankCard = ({ summonerData, rankData, accountData, isFirst }) => {
+const RankCard = ({ summonerData, rankData, accountData, isFirst,translations  }) => {
   const [showTrollImage, setShowTrollImage] = useState(false);
 
   const soloRank = rankData.find(entry => entry.queueType === "RANKED_SOLO_5x5") || { tier: '', rank: '', leaguePoints: 0, wins: 0, losses: 0 };
@@ -42,13 +42,13 @@ const RankCard = ({ summonerData, rankData, accountData, isFirst }) => {
       <img src={tierImages[soloRank.tier] || tierImages['IRON']} alt={`${soloRank.tier} Emblem`} />
       <div className="rank-info">
         <h2>{accountData.gameName}#{accountData.tagLine}</h2>
-        <p>Level: {summonerData.summonerLevel}</p>
-        <p>Rank: {soloRank.tier} {soloRank.rank}</p>
+        <p>{translations.level}: {summonerData.summonerLevel}</p>
+        <p>{translations.rank}: {soloRank.tier} {soloRank.rank}</p>
       </div>
       <div className="rank-stats">
-        <p>PDL: {soloRank.leaguePoints}</p>
-        <p>Wins: {soloRank.wins}</p>
-        <p>Losses: {soloRank.losses}</p>
+        <p>{translations.lp}: {soloRank.leaguePoints}</p>
+        <p>{translations.wins}: {soloRank.wins}</p>
+        <p>{translations.losses}: {soloRank.losses}</p>
       </div>
       {showTrollImage && (
         <div className="troll-info">
