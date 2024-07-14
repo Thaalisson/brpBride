@@ -1,3 +1,4 @@
+/* src/styles/App.css */
 body, html {
   margin: 0;
   background-color: #000000;
@@ -13,8 +14,8 @@ body, html {
   display: flex;
   flex-direction: column;
   min-height: 100vh;
-  width: 100%; /* Garantir que a App ocupe toda a largura */
-  justify-content: space-between; /* Espaçamento para empurrar o footer para o final */
+  width: 100%;
+  justify-content: space-between;
 }
 
 header {
@@ -23,11 +24,11 @@ header {
 }
 
 .players-container {
-  flex: 1; /* Faz o container dos jogadores ocupar o espaço restante */
+  flex: 1;
   display: flex;
   flex-direction: column;
   align-items: center;
-  width: 100%; /* Garantir que o container ocupe toda a largura */
+  width: 100%;
 }
 
 .rank-card {
@@ -35,8 +36,8 @@ header {
   border-radius: 8px;
   padding: 20px;
   margin: 10px;
-  width: 150%; /* Ajuste para largura responsiva */
-  max-width: 800px; /* Largura máxima */
+  width: 150%;
+  max-width: 800px;
   display: flex;
   flex-direction: row;
   align-items: center;
@@ -44,8 +45,8 @@ header {
 }
 
 .rank-card img {
-  width: 100px; /* Tamanho da imagem ajustado */
-  margin: 0 20px; /* Espaçamento lateral ajustado */
+  width: 100px;
+  margin: 0 20px;
 }
 
 .rank-info {
@@ -62,7 +63,7 @@ header {
   justify-content: center;
   text-align: right;
   width: 30%;
-  background-color: #1A1A1E; 
+  background-color: #1A1A1E;
   padding: 10px;
   border-radius: 8px;
   color: #ffffff;
@@ -70,12 +71,12 @@ header {
 
 h1 {
   color: #bbdefb;
-  font-size: 54px; /* Tamanho do texto */
+  font-size: 54px;
 }
 
 h2 {
   color: #e3f2fd;
-  font-size: 18px; /* Tamanho do texto */
+  font-size: 18px;
 }
 
 p {
@@ -85,19 +86,19 @@ p {
 @media (max-width: 600px) {
   .rank-card {
     flex-direction: column;
-    align-items: center; /* Alinha os itens ao centro */
+    align-items: center;
     width: 90%;
     text-align: center;
   }
 
   .rank-card img {
-    width: 80px; /* Tamanho da imagem ajustado para mobile */
-    margin: 10px 0; /* Espaçamento lateral ajustado para mobile */
+    width: 80px;
+    margin: 10px 0;
   }
 
   .rank-info, .rank-stats {
     width: 100%;
-    text-align: center; /* Centraliza o texto */
+    text-align: center;
   }
 
   .rank-stats {
@@ -106,7 +107,6 @@ p {
 }
 
 footer {
-  /* Tom de cinza mais escuro */
   color: #ffffff;
   text-align: center;
   padding: 20px;
@@ -132,4 +132,63 @@ footer {
 
 .footer svg {
   margin-left: 8px;
+}
+
+.language-toggle-container {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  padding: 10px 20px;
+}
+
+.language-label {
+  font-size: 14px;
+  font-weight: bold;
+  margin-bottom: 5px;
+  color: white;
+}
+
+.switch {
+  position: relative;
+  display: inline-block;
+  width: 60px;
+  height: 34px;
+}
+
+.switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: gray;
+  transition: .4s;
+  border-radius: 34px;
+}
+
+.slider:before {
+  position: absolute;
+  content: "";
+  height: 26px;
+  width: 26px;
+  left: 4px;
+  bottom: 4px;
+  background-color: white;
+  transition: .4s;
+  border-radius: 50%;
+}
+
+input:checked + .slider {
+  background-color: rgb(0, 0, 0);
+}
+
+input:checked + .slider:before {
+  transform: translateX(26px);
 }

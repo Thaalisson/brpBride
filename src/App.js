@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import Header from './components/Header';
 import RankCard from './components/RankCard';
+import Prize from './components/Prize';
 import { fetchPUUID, fetchSummonerByPUUID, fetchRankData } from './api/leagueAPI';
 import en from './i18n/en';
 import pt from './i18n/pt';
@@ -118,25 +120,36 @@ const App = () => {
   };
 
   return (
-    <div className="App">
-      <Header />
-      <button className="language-button" onClick={toggleLanguage}>
-  {language === 'en' ? 'Português' : 'English'}
-</button>
-      <div className="players-container">
-        {playersData.map((playerData, index) => (
-          <RankCard 
-            key={index}
-            summonerData={playerData.summoner} 
-            rankData={playerData.rank} 
-            accountData={playerData.account} 
-            isFirst={index === 0} 
-            translations={translations}
-          />
-        ))}
+    <Router>
+      <div className="App">
+        <Header />
+        <div className="language-toggle-container">
+          <label className="language-label">{language === 'en' ? 'EN' : 'PT'}</label>
+          <label className="switch">
+            <input type="checkbox" checked={language === 'en'} onChange={toggleLanguage} />
+            <span className="slider"></span>
+          </label>
+        </div>
+        <Routes>
+          <Route exact path="/" element={
+            <div className="players-container">
+              {playersData.map((playerData, index) => (
+                <RankCard
+                  key={index}
+                  summonerData={playerData.summoner}
+                  rankData={playerData.rank}
+                  accountData={playerData.account}
+                  isFirst={index === 0}
+                  translations={translations}
+                />
+              ))}
+            </div>
+          }/>
+           <Route path="/prize" element={<Prize topPlayers={playersData} translations={translations} />} />
+        </Routes>
+        <Footer />
       </div>
-      <Footer/>
-    </div>
+    </Router>
   );
 };
 
