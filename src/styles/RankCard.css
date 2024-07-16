@@ -1,24 +1,25 @@
+/* src/styles/RankCard.css */
+
 .rank-card {
   background-color: #1A1A1E;
   border-radius: 8px;
   padding: 20px;
-  margin: 10px auto; /* Centraliza o card horizontalmente */
-  width: 90%; /* Ajuste para largura responsiva */
-  max-width: 800px; /* Largura máxima */
+  margin: 10px;
+  width: 150%;
+  max-width: 800px;
   display: flex;
   flex-direction: row;
   align-items: center;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
-  cursor: pointer;
+  position: relative; /* Para posicionar o troféu e o número */
 }
 
-.rank-card.first {
-  border: 2px solid #FFD700; /* Borda amarela para o primeiro jogador */
-}
-
-.rank-card img {
-  width: 100px;
-  margin: 0 20px;
+.rank-card .trophy-image {
+  width: 40px; /* Aumentar o tamanho do troféu */
+  height: 40px;
+  position: absolute;
+  top: 10px;
+  left: 10px;
 }
 
 .rank-info {
@@ -27,6 +28,21 @@
   justify-content: center;
   text-align: left;
   width: 50%;
+  position: relative;
+}
+
+.rank-info .position-number {
+  font-size: 50px;
+  font-weight: bold;
+  color: #FFD700; /* Dourado */
+  position: absolute;
+  top: -10px;
+  left: 80px; /* Ajuste conforme necessário */
+}
+
+.rank-info .tier-image {
+  width: 100px;
+  margin: 0 20px;
 }
 
 .rank-stats {
@@ -35,15 +51,24 @@
   justify-content: center;
   text-align: right;
   width: 30%;
-  background-color: #1A1A1E;
+  background-color: #1A1A1E; 
   padding: 10px;
   border-radius: 8px;
   color: #ffffff;
 }
 
-.first-player-highlight {
-  text-align: center;
-  width: 100%;
+.rank-stats .opgg-button {
+  margin-top: 10px;
+  padding: 8px 16px;
+  background-color: #1e90ff;
+  color: #ffffff;
+  text-decoration: none;
+  border-radius: 4px;
+  transition: background-color 0.3s;
+}
+
+.rank-stats .opgg-button:hover {
+  background-color: #1c86ee;
 }
 
 @media (max-width: 600px) {
@@ -67,22 +92,4 @@
   .rank-stats {
     margin-top: 10px;
   }
-}
-
-.language-button {
-  background-color: rgba(255, 255, 255, 0.7); /* Fundo branco com 70% de opacidade */
-  color: #333; /* Cor do texto */
-  border: 1px solid #ccc; /* Borda cinza clara */
-  border-radius: 5px; /* Bordas arredondadas */
-  padding: 10px 20px; /* Espaçamento interno */
-  margin: 20px auto; /* Centraliza o botão horizontalmente */
-  display: block; /* Faz o botão ocupar toda a linha disponível */
-  cursor: pointer;
-  font-size: 16px; /* Tamanho da fonte */
-  transition: background-color 0.3s, color 0.3s; /* Transição suave para mudanças de cor */
-}
-
-.language-button:hover {
-  background-color: rgba(255, 255, 255, 0.9); /* Fundo branco com 90% de opacidade no hover */
-  color: #000; /* Cor do texto no hover */
 }

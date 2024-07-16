@@ -10,6 +10,7 @@ import masterImage from '../assets/images/Emblem_Master.png';
 import grandmasterImage from '../assets/images/Emblem_Grandmaster.png';
 import challengerImage from '../assets/images/Emblem_Challenger.png';
 import trollImage from '../assets/images/Troll.png';
+import trophyImage from '../assets/images/Trophy.png'; // Adicione a imagem do troféu
 import '../styles/RankCard.css';
 
 const tierImages = {
@@ -26,7 +27,7 @@ const tierImages = {
   UNRANKED: bronzeImage
 };
 
-const RankCard = ({ summonerData, rankData, accountData, isFirst, translations }) => {
+const RankCard = ({ summonerData, rankData, accountData, isFirst, translations, position }) => {
   const [showTrollImage, setShowTrollImage] = useState(false);
 
   const soloRank = rankData.find(entry => entry.queueType === "RANKED_SOLO_5x5") || { tier: '', rank: '', leaguePoints: 0, wins: 0, losses: 0 };
@@ -62,8 +63,14 @@ const RankCard = ({ summonerData, rankData, accountData, isFirst, translations }
     }
   };
 
+  const opggUrl = `https://www.op.gg/summoners/br/${encodeURIComponent(accountData.gameName)}-${accountData.tagLine}`;
+
   return (
     <div className={`rank-card ${isFirst ? 'first' : ''}`} onClick={handleCardClick}>
+      <div className="rank-position">
+        {position === 1 && <img src={trophyImage} alt="Trophy" className="trophy-image" />}
+        <span className="position-number">{position}</span>
+      </div>
       <img src={tierImages[soloRank.tier] || tierImages['IRON']} alt={`${soloRank.tier} Emblem`} />
       <div className="rank-info">
         <h2>{accountData.gameName}#{accountData.tagLine}</h2>
@@ -74,6 +81,7 @@ const RankCard = ({ summonerData, rankData, accountData, isFirst, translations }
         <p>{translations.lp}: {soloRank.leaguePoints}</p>
         <p>{translations.wins}: {soloRank.wins}</p>
         <p>{translations.losses}: {soloRank.losses}</p>
+        <a href={opggUrl} target="_blank" rel="noopener noreferrer" className="opgg-button">Ver no OP.GG</a>
       </div>
       {showTrollImage && (
         <div className="troll-info">

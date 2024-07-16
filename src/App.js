@@ -141,6 +141,7 @@ const App = () => {
                   accountData={playerData.account}
                   isFirst={index === 0}
                   translations={translations}
+                  position={index + 1} // Passar a posição
                 />
               ))}
             </div>
