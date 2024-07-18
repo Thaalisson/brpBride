@@ -44,3 +44,35 @@ export const fetchRankData = async (summonerId) => {
     return [];
   }
 };
+
+export const fetchActiveGame = async (summonerId) => {
+  try {
+    const response = await fetch(`${API_BASE_URL}/summoner/lol/spectator/v5/active-games/by-summoner/${summonerId}`);
+    if (!response.ok) {
+      if (response.status === 404) {
+        return null; 
+      }
+      throw new Error(`Error fetching active game data: ${response.statusText}`);
+    }
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    console.error('Error fetching active game data:', error);
+    return null;
+  }
+};
+
+
+export const fetchChampionMastery = async (puuid) => {
+  try {
+    const response = await fetch(`${API_BASE_URL}/summoner/lol/champion-mastery/v4/champion-masteries/by-puuid/${puuid}`);
+    if (!response.ok) {
+      throw new Error(`Error fetching champion mastery: ${response.statusText}`);
+    }
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    console.error('Error fetching champion mastery:', error);
+    return null;
+  }
+};

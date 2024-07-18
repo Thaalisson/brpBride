@@ -1,5 +1,3 @@
-/* src/styles/RankCard.css */
-
 .rank-card {
   background-color: #1A1A1E;
   border-radius: 8px;
@@ -12,6 +10,20 @@
   align-items: center;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
   position: relative; /* Para posicionar o troféu e o número */
+  overflow: hidden; /* Para garantir que a camada de fundo não saia dos limites */
+}
+
+.rank-card-background {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-size: cover;
+  background-position: center top; /* Ajuste a posição vertical */
+  background-position-y: 12%; /* Ajuste o valor conforme necessário para descer a imagem */
+  opacity: 0.3; /* Ajustar a opacidade conforme necessário */
+  z-index: 1; /* Colocar a camada de fundo atrás do conteúdo */
 }
 
 .rank-card .trophy-image {
@@ -20,6 +32,7 @@
   position: absolute;
   top: 10px;
   left: 10px;
+  z-index: 2; /* Colocar o troféu à frente do fundo */
 }
 
 .rank-info {
@@ -29,6 +42,7 @@
   text-align: left;
   width: 50%;
   position: relative;
+  z-index: 2; /* Colocar a informação à frente do fundo */
 }
 
 .rank-info .position-number {
@@ -51,10 +65,11 @@
   justify-content: center;
   text-align: right;
   width: 30%;
-  background-color: #1A1A1E; 
   padding: 10px;
   border-radius: 8px;
   color: #ffffff;
+  position: relative;
+  z-index: 2;
 }
 
 .rank-stats .opgg-button {
@@ -69,6 +84,11 @@
 
 .rank-stats .opgg-button:hover {
   background-color: #1c86ee;
+}
+
+.active-game-text {
+  color: red;
+  font-weight: bold;
 }
 
 @media (max-width: 600px) {

@@ -49,25 +49,6 @@ header {
   margin: 0 20px;
 }
 
-.rank-info {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  text-align: left;
-  width: 50%;
-}
-
-.rank-stats {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  text-align: right;
-  width: 30%;
-  background-color: #1A1A1E;
-  padding: 10px;
-  border-radius: 8px;
-  color: #ffffff;
-}
 
 h1 {
   color: #bbdefb;

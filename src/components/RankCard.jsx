@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import ironImage from '../assets/images/Emblem_Iron.png';
 import bronzeImage from '../assets/images/Emblem_Bronze.png';
 import silverImage from '../assets/images/Emblem_Silver.png';
@@ -9,8 +9,10 @@ import diamondImage from '../assets/images/Emblem_Diamond.png';
 import masterImage from '../assets/images/Emblem_Master.png';
 import grandmasterImage from '../assets/images/Emblem_Grandmaster.png';
 import challengerImage from '../assets/images/Emblem_Challenger.png';
-import trollImage from '../assets/images/Troll.png';
-import trophyImage from '../assets/images/Trophy.png'; // Adicione a imagem do troféu
+import trophyImage from '../assets/images/Trophy.png';
+import trophySilverImage from '../assets/images/Silver.png';
+import trophyBronzeImage from '../assets/images/Bronze.png';
+import { fetchActiveGame, fetchChampionMastery } from '../api/leagueAPI';
 import '../styles/RankCard.css';
 
 const tierImages = {
@@ -27,14 +29,46 @@ const tierImages = {
   UNRANKED: bronzeImage
 };
 
+const getChampionImageUrl = (championName) => `https://ddragon.leagueoflegends.com/cdn/img/champion/splash/${championName}_0.jpg`;
+
 const RankCard = ({ summonerData, rankData, accountData, isFirst, translations, position }) => {
-  const [showTrollImage, setShowTrollImage] = useState(false);
+  const [activeGame, setActiveGame] = useState(false);
+  const [mainChampion, setMainChampion] = useState(null);
+  const [championData, setChampionData] = useState({});
 
   const soloRank = rankData.find(entry => entry.queueType === "RANKED_SOLO_5x5") || { tier: '', rank: '', leaguePoints: 0, wins: 0, losses: 0 };
 
-  const handleCardClick = () => {
-    setShowTrollImage(!showTrollImage);
-  };
+  useEffect(() => {
+    const fetchChampionData = async () => {
+      try {
+        const response = await fetch('https://ddragon.leagueoflegends.com/cdn/12.18.1/data/en_US/champion.json');
+        const data = await response.json();
+        const championMap = {};
+        Object.values(data.data).forEach(champion => {
+          championMap[champion.key] = champion.id;
+        });
+        setChampionData(championMap);
+      } catch (error) {
+        console.error('Error fetching champion data:', error);
+      }
+    };
+
+    fetchChampionData();
+  }, []);
+
+  useEffect(() => {
+    const fetchGameAndMastery = async () => {
+      const gameData = await fetchActiveGame(accountData.puuid);
+      setActiveGame(!!gameData);
+
+      const masteryData = await fetchChampionMastery(accountData.puuid);
+      if (masteryData && masteryData.length > 0) {
+        setMainChampion(masteryData[0].championId);
+      }
+    };
+
+    fetchGameAndMastery();
+  }, [accountData.puuid]);
 
   const tierTranslation = (tier) => {
     switch (tier) {
@@ -65,10 +99,31 @@ const RankCard = ({ summonerData, rankData, accountData, isFirst, translations, 
 
   const opggUrl = `https://www.op.gg/summoners/br/${encodeURIComponent(accountData.gameName)}-${accountData.tagLine}`;
 
+  const getTrophyImage = () => {
+    switch (position) {
+      case 1:
+        return trophyImage;
+      case 2:
+        return trophySilverImage;
+      case 3:
+        return trophyBronzeImage;
+      default:
+        return null;
+    }
+  };
+
   return (
-    <div className={`rank-card ${isFirst ? 'first' : ''}`} onClick={handleCardClick}>
+    <div 
+      className={`rank-card ${isFirst ? 'first' : ''}`}
+    >
+      {mainChampion && championData[mainChampion] && (
+        <div 
+          className="rank-card-background" 
+          style={{ backgroundImage: `url(${getChampionImageUrl(championData[mainChampion])})` }}
+        />
+      )}
       <div className="rank-position">
-        {position === 1 && <img src={trophyImage} alt="Trophy" className="trophy-image" />}
+        {getTrophyImage() && <img src={getTrophyImage()} alt="Trophy" className="trophy-image" />}
         <span className="position-number">{position}</span>
       </div>
       <img src={tierImages[soloRank.tier] || tierImages['IRON']} alt={`${soloRank.tier} Emblem`} />
@@ -76,6 +131,7 @@ const RankCard = ({ summonerData, rankData, accountData, isFirst, translations, 
         <h2>{accountData.gameName}#{accountData.tagLine}</h2>
         <p>{translations.level}: {summonerData.summonerLevel}</p>
         <p>{translations.rank}: {tierTranslation(soloRank.tier)} {soloRank.rank}</p>
+        {activeGame && <p className="active-game-text">{translations.live}</p>}
       </div>
       <div className="rank-stats">
         <p>{translations.lp}: {soloRank.leaguePoints}</p>
@@ -83,11 +139,6 @@ const RankCard = ({ summonerData, rankData, accountData, isFirst, translations, 
         <p>{translations.losses}: {soloRank.losses}</p>
         <a href={opggUrl} target="_blank" rel="noopener noreferrer" className="opgg-button">Ver no OP.GG</a>
       </div>
-      {showTrollImage && (
-        <div className="troll-info">
-          <img src={trollImage} alt="TROLL 1" />
-        </div>
-      )}
     </div>
   );
 };
