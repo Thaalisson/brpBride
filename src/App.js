@@ -88,29 +88,31 @@ const App = () => {
   const translations = language === 'en' ? en : pt;
 
   useEffect(() => {
-    const getPlayersData = async () => {
-      const allPlayersData = await Promise.all(players.map(async (player) => {
-        const account = await fetchPUUID(player.gameName, player.tagLine);
-        if (!account) return null;
+ const getPlayersData = async () => {
+  const allPlayersData = await Promise.all(players.map(async (player) => {
+    const account = await fetchPUUID(player.gameName, player.tagLine);
+    if (!account) return null;
 
-        const summoner = await fetchSummonerByPUUID(account.puuid);
-        if (!summoner) return null;
+    const summoner = await fetchSummonerByPUUID(account.puuid);
+    if (!summoner) return null;
 
-        const rankData = await fetchRankData(summoner.id);
-        if (!rankData) return null;
+    const rankData = await fetchRankData(summoner.id);
+    if (!rankData || rankData.length === 0) return { ...player, account, summoner, rank: [{ tier: 'UNRANKED', rank: 'IV', leaguePoints: 0 }] };
 
-        const rank = rankData.find(r => r.queueType === 'RANKED_SOLO_5x5') || rankData[0];
-        return {
-          ...player,
-          account,
-          summoner,
-          rank: [rank]
-        };
-      }));
-      const filteredPlayersData = allPlayersData.filter(data => data !== null);
-      const sortedPlayersData = filteredPlayersData.sort(comparePlayers);
-      setPlayersData(sortedPlayersData);
+    const rank = rankData.find(r => r.queueType === 'RANKED_SOLO_5x5') || rankData[0];
+    return {
+      ...player,
+      account,
+      summoner,
+      rank: [rank]
     };
+  }));
+
+  const filteredPlayersData = allPlayersData.filter(data => data !== null);
+  const sortedPlayersData = filteredPlayersData.sort(comparePlayers);
+  setPlayersData(sortedPlayersData);
+};
+
 
     getPlayersData();
   }, []);
