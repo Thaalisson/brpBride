@@ -53,12 +53,12 @@ const tier = (tier) => {
 };
 
 const comparePlayers = (a, b) => {
-  const tierA = a.rank && a.rank.length > 0 ? a.rank[0].tier : 'UNRANKED';
-  const tierB = b.rank && b.rank.length > 0 ? b.rank[0].tier : 'UNRANKED';
-  const rankA = a.rank && a.rank.length > 0 ? a.rank[0].rank : 'IV';
-  const rankB = b.rank && b.rank.length > 0 ? b.rank[0].rank : 'IV';
-  const pointsA = a.rank && a.rank.length > 0 ? a.rank[0].leaguePoints : 0;
-  const pointsB = b.rank && b.rank.length > 0 ? b.rank[0].leaguePoints : 0;
+  const tierA = a.rank && a.rank.length > 0 ? a.rank[0]?.tier || 'UNRANKED' : 'UNRANKED';
+  const tierB = b.rank && b.rank.length > 0 ? b.rank[0]?.tier || 'UNRANKED' : 'UNRANKED';
+  const rankA = a.rank && a.rank.length > 0 ? a.rank[0]?.rank || 'IV' : 'IV';
+  const rankB = b.rank && b.rank.length > 0 ? b.rank[0]?.rank || 'IV' : 'IV';
+  const pointsA = a.rank && a.rank.length > 0 ? a.rank[0]?.leaguePoints || 0 : 0;
+  const pointsB = b.rank && b.rank.length > 0 ? b.rank[0]?.leaguePoints || 0 : 0;
 
   if (elo(tierA) !== elo(tierB)) {
     return elo(tierB) - elo(tierA);
