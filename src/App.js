@@ -79,6 +79,7 @@ const players = [
   { gameName: 'Snake', tagLine: '06033' },
   { gameName: 'RiteZ', tagLine: 'BR1' },
   { gameName: 'Stalo', tagLine: 'STALO' },
+  { gameName: 'Franscoviaki', tagLine: 'BR1' },
   { gameName: 'BRP Oghati', tagLine: 'BR1' }
 ];
 
