@@ -40,6 +40,7 @@ const pt = {
   gamesPlayed: "Jogos recentes",
   kda: "KDA médio",
   streak: "Sequência",
+  mostPlayed: "Campeões mais jogados",
   footerCredit: "Feito por",
   footerRights: "Todos os direitos reservados."
 };

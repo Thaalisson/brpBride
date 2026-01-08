@@ -96,6 +96,7 @@ const RankCard = ({ summonerData, rankData, accountData, isFirst, translations, 
       let kills = 0;
       let deaths = 0;
       let assists = 0;
+      const championCounts = new Map();
 
       matches.forEach((match) => {
         const participant = match?.info?.participants?.find((entry) => entry.puuid === accountData.puuid);
@@ -108,6 +109,11 @@ const RankCard = ({ summonerData, rankData, accountData, isFirst, translations, 
         kills += participant.kills || 0;
         deaths += participant.deaths || 0;
         assists += participant.assists || 0;
+        const championId = participant.championId;
+        if (championId !== undefined && championId !== null) {
+          const key = String(championId);
+          championCounts.set(key, (championCounts.get(key) || 0) + 1);
+        }
       });
 
       const totalGames = outcomes.length;
@@ -135,12 +141,18 @@ const RankCard = ({ summonerData, rankData, accountData, isFirst, translations, 
         streak = `${first}${count}`;
       }
 
+      const topChampions = Array.from(championCounts.entries())
+        .sort((a, b) => b[1] - a[1])
+        .slice(0, 3)
+        .map(([id, count]) => ({ id, count }));
+
       if (isMounted) {
         setRecentStats({
           winRate,
           kda,
           streak,
-          totalGames
+          totalGames,
+          topChampions
         });
       }
     };
@@ -257,6 +269,20 @@ const RankCard = ({ summonerData, rankData, accountData, isFirst, translations, 
               <span className="rounded-full border border-white/10 bg-white/5 px-3 py-1">
                 {translations.streak}: {recentStats?.streak ?? '--'}
               </span>
+            </div>
+            <div className="mt-3 flex flex-wrap items-center gap-2 text-[0.6rem] text-slate-300 md:justify-end">
+              <span className="text-[0.55rem] uppercase tracking-[0.3em] text-slate-500">{translations.mostPlayed}</span>
+              {(recentStats?.topChampions || []).map((champion) => {
+                const name = championData[champion.id] || `#${champion.id}`;
+                return (
+                  <span key={champion.id} className="rounded-full border border-white/10 bg-white/5 px-3 py-1">
+                    {name} · {champion.count}
+                  </span>
+                );
+              })}
+              {!recentStats?.topChampions?.length && (
+                <span className="rounded-full border border-white/10 bg-white/5 px-3 py-1">--</span>
+              )}
             </div>
           </div>
           <a

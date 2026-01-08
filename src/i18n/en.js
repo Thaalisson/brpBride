@@ -40,6 +40,7 @@ const en = {
   gamesPlayed: "Recent games",
   kda: "Avg KDA",
   streak: "Streak",
+  mostPlayed: "Most played",
   footerCredit: "Built by",
   footerRights: "All rights reserved."
 };
