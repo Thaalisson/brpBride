@@ -38,7 +38,7 @@ app.get('/lol/summoner/v4/summoners/by-puuid/*', async (req, res) => {
   }
 });
 
-app.get('/lol/league/v4/entries/by-summoner/*', async (req, res) => {
+app.get('/lol/league/v4/entries/by-puuid/*', async (req, res) => {
   try {
     const fetch = (await import('node-fetch')).default;
     const apiUrl = `https://br1.api.riotgames.com${req.path}?api_key=${API_KEY}`;
@@ -51,6 +51,21 @@ app.get('/lol/league/v4/entries/by-summoner/*', async (req, res) => {
   }
 });
 
+app.get('/lol/match/v5/*', async (req, res) => {
+  try {
+    const fetch = (await import('node-fetch')).default;
+    const separator = req.originalUrl.includes('?') ? '&' : '?';
+    const apiUrl = `https://americas.api.riotgames.com${req.originalUrl}${separator}api_key=${API_KEY}`;
+    console.log('Fetching from:', apiUrl);
+    const response = await fetch(apiUrl);
+    res.json(await response.json());
+  } catch (error) {
+    console.error('Error fetching:', error);
+    res.status(500).json({ error: error.toString() });
+  }
+});
+
 app.listen(4000, function () {
   console.log("Server started on port 4000");
 });
+

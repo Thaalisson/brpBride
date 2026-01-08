@@ -28,9 +28,9 @@ export const fetchSummonerByPUUID = async (puuid) => {
   }
 };
 
-export const fetchRankData = async (summonerId) => {
+export const fetchRankData = async (puuid) => {
   try {
-    const response = await fetch(`${API_BASE_URL}/summoner/lol/league/v4/entries/by-summoner/${summonerId}`);
+    const response = await fetch(`${API_BASE_URL}/summoner/lol/league/v4/entries/by-puuid/${puuid}`);
     if (!response.ok) {
       throw new Error(`Error fetching rank data: ${response.statusText}`);
     }
@@ -65,3 +65,31 @@ export const fetchChampionMastery = async (puuid) => {
     return null;
   }
 };
+
+export const fetchMatchIds = async (puuid, count = 10) => {
+  try {
+    const response = await fetch(`${API_BASE_URL}/match/lol/match/v5/matches/by-puuid/${puuid}/ids?count=${count}`);
+    if (!response.ok) {
+      throw new Error(`Error fetching match ids: ${response.statusText}`);
+    }
+    const data = await response.json();
+    return Array.isArray(data) ? data : [];
+  } catch (error) {
+    console.error('Error fetching match ids:', error);
+    return [];
+  }
+};
+
+export const fetchMatchDetail = async (matchId) => {
+  try {
+    const response = await fetch(`${API_BASE_URL}/match/lol/match/v5/matches/${matchId}`);
+    if (!response.ok) {
+      throw new Error(`Error fetching match detail: ${response.statusText}`);
+    }
+    return await response.json();
+  } catch (error) {
+    console.error('Error fetching match detail:', error);
+    return null;
+  }
+};
+

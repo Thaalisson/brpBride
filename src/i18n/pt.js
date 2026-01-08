@@ -1,6 +1,6 @@
 const pt = {
   greeting: "Olá",
-  rank: "Classificação",
+  rank: "Rank",
   level: "Nível",
   lp: "PDL",
   wins: "Vitórias",
@@ -11,20 +11,37 @@ const pt = {
   gold: "Ouro",
   platinum: "Platina",
   emerald: "Esmeralda",
-  diamond: "Diamante",  
+  diamond: "Diamante",
   master: "Mestre",
-  live: "Em partida",
+  live: "Ao vivo",
   grandmaster: "Grão-Mestre",
   challenger: "Desafiante",
-  prizeExplanation: "O ganhador do prêmio será aquele que no final do dia 31 de outubro de 2024 ficar em primeiro colocado. O primeiro lugar receberá 40 CAD, o segundo lugar receberá 10 CAD e o terceiro lugar receberá 5 CAD. Será realizada uma avaliação para verificar se houve uso de Elo boosting. Em caso de empate, o vencedor será determinado pelos seguintes critérios de desempate:",
+  navHome: "Ranking",
+  navPrize: "Premiação",
+  heroTag: "Liga BRP",
+  heroTitle: "Ranking BRP Pride",
+  heroSubtitle: "Acompanhe a disputa em tempo real e descubra quem está no topo.",
+  languageLabel: "Idioma",
+  prizeTitle: "Premiação",
+  prizeSubtitle: "O topo leva a glória — e o prêmio.",
+  prizeExplanation: "O prêmio será entregue ao líder no fim do dia 31 de outubro de 2024. 1º lugar: 40 CAD, 2º: 10 CAD, 3º: 5 CAD. Haverá revisão para identificar Elo boosting. Em caso de empate, usamos os critérios abaixo.",
+  tiebreakerTitle: "Critérios de desempate",
   tiebreakerRules: [
-    "1. Maior taxa de vitórias",
-    "2. Maior número de partidas jogadas",
-    "3. Maior número de abates",
-    "4. Menor número de mortes",
-    "5. Maior número de assistências"
+    "Maior taxa de vitórias",
+    "Mais partidas jogadas",
+    "Mais abates",
+    "Menos mortes",
+    "Mais assistências"
   ],
-  endDate: "Data de Término: 31/10/2024"
+  endDate: "Encerramento: 31/10/2024",
+  opgg: "Ver no OP.GG",
+  metricsTitle: "Métricas",
+  winRate: "Taxa de vitórias",
+  gamesPlayed: "Jogos recentes",
+  kda: "KDA médio",
+  streak: "Sequência",
+  footerCredit: "Feito por",
+  footerRights: "Todos os direitos reservados."
 };
 
 export default pt;

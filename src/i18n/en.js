@@ -13,18 +13,35 @@ const en = {
   emerald: "Emerald",
   diamond: "Diamond",
   master: "Master",
-  live : "in Live",
+  live: "Live",
   grandmaster: "Grandmaster",
   challenger: "Challenger",
-  prizeExplanation: "The winner of the prize will be the player who is in first place at the end of the day on October 31, 2024. The first place winner will receive 40 CAD, the second place winner will receive 10 CAD, and the third place winner will receive 5 CAD. An evaluation will be conducted to check for any use of Elo boosting. In case of a tie, the winner will be determined by the following tiebreakers:",
+  navHome: "Ranking",
+  navPrize: "Prizes",
+  heroTag: "BRP League",
+  heroTitle: "BRP Pride Ranking",
+  heroSubtitle: "Track the race in real time and see who holds the top spot.",
+  languageLabel: "Language",
+  prizeTitle: "Prizes",
+  prizeSubtitle: "Glory for the top three — and a real reward.",
+  prizeExplanation: "The prize goes to the leader at the end of October 31, 2024. 1st place: 40 CAD, 2nd: 10 CAD, 3rd: 5 CAD. We will review for any Elo boosting. In case of a tie, we use the rules below.",
+  tiebreakerTitle: "Tiebreakers",
   tiebreakerRules: [
-    "1. Highest win rate",
-    "2. Most games played",
-    "3. Highest number of kills",
-    "4. Lowest number of deaths",
-    "5. Highest number of assists"
+    "Highest win rate",
+    "Most games played",
+    "Most kills",
+    "Fewest deaths",
+    "Most assists"
   ],
-  endDate: "End Date: 2024-10-31"
+  endDate: "Ends on: 2024-10-31",
+  opgg: "View on OP.GG",
+  metricsTitle: "Metrics",
+  winRate: "Win rate",
+  gamesPlayed: "Recent games",
+  kda: "Avg KDA",
+  streak: "Streak",
+  footerCredit: "Built by",
+  footerRights: "All rights reserved."
 };
 
 export default en;
