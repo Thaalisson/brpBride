@@ -68,7 +68,7 @@ const comparePlayers = (a, b) => {
 };
 
 const players = [
-  { gameName: 'BRP VITOR', tagLine: 'BR1' },
+  { gameName: 'BRP VITOR', tagLine: 'BR2' },
   { gameName: 'BRP FATE', tagLine: 'BR1' },
  // { gameName: 'ColdFear', tagLine: '6015' },
   { gameName: 'BRP BRENIN', tagLine: 'BR1' },
@@ -78,7 +78,8 @@ const players = [
   { gameName: 'RiteZ', tagLine: 'BR1' },
   { gameName: 'Stalo', tagLine: 'STALO' },
   { gameName: 'Franscoviaki', tagLine: 'BR1' },
-  { gameName: 'BRP Oghati', tagLine: 'BR1' }
+  { gameName: 'BRP Oghati', tagLine: 'BR1' },
+  { gameName: 'martini', tagLine: 'lol' }
 ];
 
 const App = () => {

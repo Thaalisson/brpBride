@@ -1,5 +1,61 @@
 const API_BASE_URL = process.env.REACT_APP_API_BASE_URL || 'https://brprank.netlify.app/.netlify/functions';
 
+const CACHE_TTL_MS = 15 * 60 * 1000;
+const cache = new Map();
+
+const getCache = (key) => {
+  const entry = cache.get(key);
+  if (!entry) {
+    return null;
+  }
+  if (Date.now() - entry.time > CACHE_TTL_MS) {
+    cache.delete(key);
+    return null;
+  }
+  return entry.value;
+};
+
+const setCache = (key, value) => {
+  cache.set(key, { time: Date.now(), value });
+};
+
+const queue = [];
+let processingQueue = false;
+const queueDelayMs = 250;
+
+const delay = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
+
+const processQueue = async () => {
+  if (processingQueue) {
+    return;
+  }
+  processingQueue = true;
+  while (queue.length) {
+    const { task, resolve, reject } = queue.shift();
+    try {
+      const result = await task();
+      resolve(result);
+    } catch (error) {
+      reject(error);
+    }
+    await delay(queueDelayMs);
+  }
+  processingQueue = false;
+};
+
+const enqueue = (task) => new Promise((resolve, reject) => {
+  queue.push({ task, resolve, reject });
+  processQueue();
+});
+
+const fetchJson = async (url, errorLabel) => {
+  const response = await fetch(url);
+  if (!response.ok) {
+    throw new Error(`${errorLabel}: ${response.statusText}`);
+  }
+  return response.json();
+};
+
 export const fetchPUUID = async (gameName, tagLine) => {
   try {
     const response = await fetch(`${API_BASE_URL}/riot/account/v1/accounts/by-riot-id/${gameName}/${tagLine}`);
@@ -46,11 +102,8 @@ export const fetchRankData = async (puuid) => {
 };
 
 export const fetchActiveGame = async (summonerId) => {
- 
-        return null;
-  
+  return null;
 };
-
 
 export const fetchChampionMastery = async (puuid) => {
   try {
@@ -66,14 +119,18 @@ export const fetchChampionMastery = async (puuid) => {
   }
 };
 
-export const fetchMatchIds = async (puuid, count = 10) => {
+export const fetchMatchIds = async (puuid, count = 5) => {
+  const url = `${API_BASE_URL}/match/lol/match/v5/matches/by-puuid/${puuid}/ids?count=${count}`;
+  const cached = getCache(url);
+  if (cached) {
+    return cached;
+  }
+
   try {
-    const response = await fetch(`${API_BASE_URL}/match/lol/match/v5/matches/by-puuid/${puuid}/ids?count=${count}`);
-    if (!response.ok) {
-      throw new Error(`Error fetching match ids: ${response.statusText}`);
-    }
-    const data = await response.json();
-    return Array.isArray(data) ? data : [];
+    const data = await enqueue(() => fetchJson(url, 'Error fetching match ids'));
+    const result = Array.isArray(data) ? data : [];
+    setCache(url, result);
+    return result;
   } catch (error) {
     console.error('Error fetching match ids:', error);
     return [];
@@ -81,15 +138,18 @@ export const fetchMatchIds = async (puuid, count = 10) => {
 };
 
 export const fetchMatchDetail = async (matchId) => {
+  const url = `${API_BASE_URL}/match/lol/match/v5/matches/${matchId}`;
+  const cached = getCache(url);
+  if (cached) {
+    return cached;
+  }
+
   try {
-    const response = await fetch(`${API_BASE_URL}/match/lol/match/v5/matches/${matchId}`);
-    if (!response.ok) {
-      throw new Error(`Error fetching match detail: ${response.statusText}`);
-    }
-    return await response.json();
+    const data = await enqueue(() => fetchJson(url, 'Error fetching match detail'));
+    setCache(url, data);
+    return data;
   } catch (error) {
     console.error('Error fetching match detail:', error);
     return null;
   }
 };
-

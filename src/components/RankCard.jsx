@@ -82,7 +82,7 @@ const RankCard = ({ summonerData, rankData, accountData, isFirst, translations, 
     let isMounted = true;
 
     const fetchRecentStats = async () => {
-      const matchIds = await fetchMatchIds(accountData.puuid, 10);
+      const matchIds = await fetchMatchIds(accountData.puuid);
       if (!matchIds.length) {
         if (isMounted) {
           setRecentStats(null);
@@ -274,3 +274,4 @@ const RankCard = ({ summonerData, rankData, accountData, isFirst, translations, 
 };
 
 export default RankCard;
+
