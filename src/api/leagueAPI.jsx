@@ -56,6 +56,45 @@ const fetchJson = async (url, errorLabel) => {
   return response.json();
 };
 
+let championDataCache = null;
+let championDataPromise = null;
+
+export const fetchChampionData = async () => {
+  if (championDataCache) {
+    return championDataCache;
+  }
+  if (championDataPromise) {
+    return championDataPromise;
+  }
+  championDataPromise = fetch('https://ddragon.leagueoflegends.com/cdn/12.18.1/data/en_US/champion.json')
+    .then((response) => response.json())
+    .then((data) => {
+      const championMap = {};
+      Object.values(data.data).forEach((champion) => {
+        championMap[champion.key] = champion.id;
+      });
+      championDataCache = championMap;
+      return championMap;
+    })
+    .finally(() => {
+      championDataPromise = null;
+    });
+  return championDataPromise;
+};
+
+export const fetchRankings = async () => {
+  try {
+    const response = await fetch(`${API_BASE_URL}/rankings`);
+    if (!response.ok) {
+      throw new Error(`Error fetching rankings: ${response.statusText}`);
+    }
+    return await response.json();
+  } catch (error) {
+    console.error('Error fetching rankings:', error);
+    return null;
+  }
+};
+
 export const fetchPUUID = async (gameName, tagLine) => {
   try {
     const response = await fetch(`${API_BASE_URL}/riot/account/v1/accounts/by-riot-id/${gameName}/${tagLine}`);
@@ -116,6 +155,33 @@ export const fetchChampionMastery = async (puuid) => {
   } catch (error) {
     console.error('Error fetching champion mastery:', error);
     return null;
+  }
+};
+
+export const fetchTftSummonerByPUUID = async (puuid) => {
+  try {
+    const response = await fetch(`${API_BASE_URL}/summoner/tft/summoner/v1/summoners/by-puuid/${puuid}`);
+    if (!response.ok) {
+      throw new Error(`Error fetching TFT Summoner: ${response.statusText}`);
+    }
+    return await response.json();
+  } catch (error) {
+    console.error('Error fetching TFT Summoner:', error);
+    return null;
+  }
+};
+
+export const fetchTftRankData = async (puuid) => {
+  try {
+    const response = await fetch(`${API_BASE_URL}/summoner/tft/league/v1/by-puuid/${puuid}`);
+    if (!response.ok) {
+      throw new Error(`Error fetching TFT rank data: ${response.statusText}`);
+    }
+    const data = await response.json();
+    return Array.isArray(data) ? data : [];
+  } catch (error) {
+    console.error('Error fetching TFT rank data:', error);
+    return [];
   }
 };
 

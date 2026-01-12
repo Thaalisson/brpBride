@@ -12,8 +12,7 @@ import challengerImage from '../assets/images/Emblem_Challenger.png';
 import trophyImage from '../assets/images/Trophy.png';
 import trophySilverImage from '../assets/images/Silver.png';
 import trophyBronzeImage from '../assets/images/Bronze.png';
-import { fetchActiveGame, fetchChampionMastery, fetchMatchDetail, fetchMatchIds } from '../api/leagueAPI';
-
+import { fetchChampionData } from '../api/leagueAPI';
 const tierImages = {
   IRON: ironImage,
   BRONZE: bronzeImage,
@@ -32,11 +31,8 @@ const getChampionImageUrl = (championName) => (
   `https://ddragon.leagueoflegends.com/cdn/img/champion/splash/${championName}_0.jpg`
 );
 
-const RankCard = ({ summonerData, rankData, accountData, isFirst, translations, position }) => {
-  const [activeGame, setActiveGame] = useState(false);
-  const [mainChampion, setMainChampion] = useState(null);
+const RankCard = ({ summonerData, rankData, accountData, isFirst, translations, position, activeGame = false, mainChampionId = null, recentStats = null }) => {
   const [championData, setChampionData] = useState({});
-  const [recentStats, setRecentStats] = useState(null);
 
   const soloRank = rankData.find((entry) => entry.queueType === "RANKED_SOLO_5x5") || {
     tier: '',
@@ -47,121 +43,25 @@ const RankCard = ({ summonerData, rankData, accountData, isFirst, translations, 
   };
 
   useEffect(() => {
-    const fetchChampionData = async () => {
+    let isMounted = true;
+
+    const loadChampionData = async () => {
       try {
-        const response = await fetch('https://ddragon.leagueoflegends.com/cdn/12.18.1/data/en_US/champion.json');
-        const data = await response.json();
-        const championMap = {};
-        Object.values(data.data).forEach((champion) => {
-          championMap[champion.key] = champion.id;
-        });
-        setChampionData(championMap);
+        const data = await fetchChampionData();
+        if (isMounted) {
+          setChampionData(data);
+        }
       } catch (error) {
         console.error('Error fetching champion data:', error);
       }
     };
 
-    fetchChampionData();
-  }, []);
+    loadChampionData();
 
-  useEffect(() => {
-    const fetchGameAndMastery = async () => {
-      const gameData = await fetchActiveGame(accountData.puuid);
-      setActiveGame(!!gameData);
-
-      const masteryData = await fetchChampionMastery(accountData.puuid);
-      if (masteryData && masteryData.length > 0) {
-        setMainChampion(masteryData[0].championId);
-      }
-    };
-
-    fetchGameAndMastery();
-  }, [accountData.puuid]);
-
-  useEffect(() => {
-    let isMounted = true;
-
-    const fetchRecentStats = async () => {
-      const matchIds = await fetchMatchIds(accountData.puuid);
-      if (!matchIds.length) {
-        if (isMounted) {
-          setRecentStats(null);
-        }
-        return;
-      }
-
-      const matches = await Promise.all(matchIds.map((matchId) => fetchMatchDetail(matchId)));
-      const outcomes = [];
-      let wins = 0;
-      let kills = 0;
-      let deaths = 0;
-      let assists = 0;
-      const championCounts = new Map();
-
-      matches.forEach((match) => {
-        const participant = match?.info?.participants?.find((entry) => entry.puuid === accountData.puuid);
-        if (!participant) {
-          return;
-        }
-        const didWin = !!participant.win;
-        outcomes.push(didWin ? 'W' : 'L');
-        wins += didWin ? 1 : 0;
-        kills += participant.kills || 0;
-        deaths += participant.deaths || 0;
-        assists += participant.assists || 0;
-        const championId = participant.championId;
-        if (championId !== undefined && championId !== null) {
-          const key = String(championId);
-          championCounts.set(key, (championCounts.get(key) || 0) + 1);
-        }
-      });
-
-      const totalGames = outcomes.length;
-      if (!totalGames) {
-        if (isMounted) {
-          setRecentStats(null);
-        }
-        return;
-      }
-
-      const winRate = Math.round((wins / totalGames) * 100);
-      const kda = ((kills + assists) / Math.max(1, deaths)).toFixed(2);
-      let streak = null;
-
-      if (outcomes.length) {
-        const first = outcomes[0];
-        let count = 0;
-        for (const result of outcomes) {
-          if (result === first) {
-            count += 1;
-          } else {
-            break;
-          }
-        }
-        streak = `${first}${count}`;
-      }
-
-      const topChampions = Array.from(championCounts.entries())
-        .sort((a, b) => b[1] - a[1])
-        .slice(0, 3)
-        .map(([id, count]) => ({ id, count }));
-
-      if (isMounted) {
-        setRecentStats({
-          winRate,
-          kda,
-          streak,
-          totalGames,
-          topChampions
-        });
-      }
-    };
-
-    fetchRecentStats();
     return () => {
       isMounted = false;
     };
-  }, [accountData.puuid]);
+  }, []);
 
   const tierTranslation = (tier) => {
     switch (tier) {
@@ -209,10 +109,10 @@ const RankCard = ({ summonerData, rankData, accountData, isFirst, translations, 
     <div
       className={`relative overflow-hidden rounded-2xl border bg-slate-950/60 p-5 shadow-lg backdrop-blur transition md:p-6 ${isFirst ? 'border-amber-300/60 shadow-amber-500/30' : 'border-white/10'}`}
     >
-      {mainChampion && championData[mainChampion] && (
+      {mainChampionId && championData[mainChampionId] && (
         <div
           className="absolute inset-0 bg-cover bg-top opacity-30"
-          style={{ backgroundImage: `url(${getChampionImageUrl(championData[mainChampion])})` }}
+          style={{ backgroundImage: `url(${getChampionImageUrl(championData[mainChampionId])})` }}
         />
       )}
       <div className="absolute inset-0 bg-gradient-to-r from-slate-950/90 via-slate-950/60 to-slate-950/90" />
@@ -243,7 +143,7 @@ const RankCard = ({ summonerData, rankData, accountData, isFirst, translations, 
               </span>
             )}
           </div>
-          <p className="text-sm text-slate-300">{translations.level}: {summonerData.summonerLevel}</p>
+          <p className="text-sm text-slate-300">{translations.lp}: {soloRank.leaguePoints}</p>
           <p className="text-sm text-slate-300">
             {translations.rank}: {tierTranslation(soloRank.tier)} {soloRank.rank}
           </p>

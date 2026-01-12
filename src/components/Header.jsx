@@ -17,6 +17,9 @@ const Header = ({ translations }) => {
         <Link className="transition hover:text-white" to="/">
           {translations.navHome}
         </Link>
+        <Link className="transition hover:text-white" to="/tft">
+          {translations.navTft}
+        </Link>
         <Link className="transition hover:text-white" to="/prize">
           {translations.navPrize}
         </Link>
