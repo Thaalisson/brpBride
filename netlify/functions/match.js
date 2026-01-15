@@ -4,6 +4,7 @@ const path = require('path');
 dotenv.config({ path: path.resolve(__dirname, '../../.env') });
 
 const API_KEY = process.env.API_KEY;
+const API_TFT_KEY = process.env.API_TFT_KEY;
 const CACHE_TTL_MS = 15 * 60 * 1000;
 const cache = new Map();
 const inflight = new Map();
@@ -46,7 +47,8 @@ async function fetchWithRetry(url, retries = 3, backoff = 3000) {
 exports.handler = async (event) => {
   const apiPath = event.path.replace('/.netlify/functions/match', '');
   const queryParams = new URLSearchParams(event.queryStringParameters || {});
-  queryParams.set('api_key', API_KEY);
+  const key = apiPath.startsWith('/tft/') ? (API_TFT_KEY || API_KEY) : API_KEY;
+  queryParams.set('api_key', key);
   const cacheKey = `${apiPath}?${queryParams.toString()}`;
   const cached = getCache(cacheKey);
 
